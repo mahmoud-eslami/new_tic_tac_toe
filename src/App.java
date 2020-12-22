@@ -1,12 +1,19 @@
 public class App {
     public static void main(String[] args) throws Exception {
 
-        String[][] item = {{"-","-","-","-"},{"-","-","-","-"},{"-","-","-","-"},{"-","-","-","-"}};
+        String[][] item = { { "x", "-", "-", "o" },
+                            { "x", "-", "o", "o" },
+                            { "-", "o", "-", "-" },
+                            { "-", "-", "-", "-" } };
 
         Node node = new Node(item);
 
         welcomeMethod();
         printGameBoard(node);
+
+        Origin origin = Game.findAiMove(node);
+
+        System.out.println("x = " + origin.x + " y = " + origin.y);
 
     }
 

@@ -2,8 +2,8 @@
 public class Game {
 
     // character symbol
-    public static String ai = "X";
-    public static String me = "O";
+    public static String ai = "x";
+    public static String me = "o";
     public static String playerTurn = ai;
 
     // alpha and beta count
@@ -115,12 +115,12 @@ public class Game {
             }
             return bestVal;
         } else {
-            
+
             int bestVal = beta;
 
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 4; j++) {
-                    if(node.nodeInfo[i][j] == "-"){
+                    if (node.nodeInfo[i][j] == "-") {
                         node.nodeInfo[i][j] = me;
                         bestVal = Math.min(bestVal, minmax(!isMaxUser, depth + 1, node));
                         node.nodeInfo[i][j] = "-";
@@ -129,5 +129,31 @@ public class Game {
             }
             return bestVal;
         }
+    }
+
+    public static Origin findAiMove(Node node) {
+
+        int bestVal = alpha;
+        Origin moveOrigin = new Origin();
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+
+                if (node.nodeInfo[i][j] == "-") {
+                    node.nodeInfo[i][j] = ai;
+
+                    int moveVal = minmax(false, 0, node);
+
+                    node.nodeInfo[i][j] = "-";
+
+                    if(moveVal > bestVal){
+                        moveOrigin.x = i;
+                        moveOrigin.y = j;
+                        bestVal = moveVal;
+                    }
+                }
+            }
+        }
+        return moveOrigin;
     }
 }
