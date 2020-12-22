@@ -28,9 +28,9 @@ public class Game {
             if (node.nodeInfo[i][0] == node.nodeInfo[i][1] && node.nodeInfo[i][1] == node.nodeInfo[i][2]
                     || node.nodeInfo[i][1] == node.nodeInfo[i][2] && node.nodeInfo[i][2] == node.nodeInfo[i][3]) {
                 if (node.nodeInfo[i][1] == me) {
-                    return -10;
+                    return -20;
                 } else if (node.nodeInfo[i][1] == ai) {
-                    return +10;
+                    return +20;
                 }
             }
         }
@@ -77,6 +77,12 @@ public class Game {
             if (node.nodeInfo[1][2] == me) {
                 return -20;
             } else if (node.nodeInfo[1][2] == ai) {
+                return +20;
+            }
+        } else if (node.nodeInfo[1][3] == node.nodeInfo[2][2] && node.nodeInfo[2][2] == node.nodeInfo[3][1]) {
+            if (node.nodeInfo[2][2] == me) {
+                return -20;
+            } else if (node.nodeInfo[2][2] == ai) {
                 return +20;
             }
         }
@@ -131,7 +137,7 @@ public class Game {
         }
     }
 
-    public static Origin findAiMove(Node node) {
+    public static Origin findAiMoveX(Node node) {
 
         int bestVal = alpha;
         Origin moveOrigin = new Origin();
@@ -146,7 +152,7 @@ public class Game {
 
                     node.nodeInfo[i][j] = "-";
 
-                    if(moveVal > bestVal){
+                    if (moveVal > bestVal) {
                         moveOrigin.x = i;
                         moveOrigin.y = j;
                         bestVal = moveVal;
