@@ -1,10 +1,12 @@
 public class App {
     public static void main(String[] args) throws Exception {
 
-        String[][] item = {{"","","",""},{"","","",""},{"","","",""},{"","","",""}};
+        String[][] item = {{"-","-","-","-"},{"-","-","-","-"},{"-","-","-","-"},{"-","-","-","-"}};
+
+        Node node = new Node(item);
 
         welcomeMethod();
-        printGameBoard(item);
+        printGameBoard(node);
 
     }
 
@@ -14,14 +16,11 @@ public class App {
         System.out.println("********************************************");
     }
 
-    public static void printGameBoard(String[][] gameBoard) {
+    public static void printGameBoard(Node node) {
         System.out.println("- Game Board :");
-        for (int i = 0; i < gameBoard.length; i++) {
-            for (int j = 0; j < gameBoard.length; j++) {
-                if(gameBoard[i][j] == ""){
-                    gameBoard[i][j] = "-";
-                }
-                System.out.print(gameBoard[i][j]);
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                System.out.print(node.nodeInfo[i][j]);
             }
             System.out.println();
         }

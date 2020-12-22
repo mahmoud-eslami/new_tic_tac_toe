@@ -1,11 +1,6 @@
 
 public class Node implements Cloneable {
 
-    static enum solveHuristic{
-        // todo : add some huristic here
-        BlaBla,
-    }
-
     // store node info
     public String[][] nodeInfo = new String[4][4];
 
