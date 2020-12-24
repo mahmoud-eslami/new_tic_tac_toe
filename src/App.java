@@ -18,56 +18,39 @@ public class App {
         System.out.println("Please enter 1 or 0 :\n(1 mean ai start game and 0 mean user start game)");
         // ! game mode 1 = ai and 0 = user
         int gameMode = sc.nextInt();
+        boolean gameFinished = true;
 
-        int state = Game.checkWinner(node);
-        boolean moveState = Game.canMoveTile(node);
-        boolean gameFinished = false;
+        do {
+            int state = Game.checkWinner(node);
+            boolean tieState = Game.canMoveTile(node);
 
-        if (!moveState) {
-            gameFinished = true;
-
-            System.out.println("Tie!");
-        } else if (state == +10) {
-            gameFinished = true;
-
-            System.out.println("X is winner");
-        } else if (state == -10) {
-            gameFinished = true;
-
-            System.out.println("O is winner");
-        } else {
-
-            if (gameMode == 0) {
-                System.out.println("Please enter x position of O :");
-                int xOfO = sc.nextInt();
-                System.out.println("Please enter y position of O :");
-                int yOfO = sc.nextInt();
-                System.out.println("Please enter x position of X :");
-                int xOfX = sc.nextInt();
-                System.out.println("Please enter y position of X :");
-                int yOfX = sc.nextInt();
-                Origin oOrigin = new Origin(xOfO, yOfO);
-                Origin xOrigin = new Origin(xOfX, yOfX);
-                submitMove(node, oOrigin, xOrigin);
-                printGameBoard(node);
-                Origin origin = Game.findAiMoveX(node);
-                System.out.println("x = " + origin.x + " y = " + origin.y);
-                Origin newOrigin = Game.findAiMoveO(origin, node);
-                System.out.println("x = " + newOrigin.x + " y = " + newOrigin.y);
-                submitMove(node, origin, newOrigin);
-                printGameBoard(node);
-            } else if(gameMode == 1){
-                Origin oOrigin = new Origin(0, 1);
-                Origin xOrigin = new Origin(0, 0);
-                submitMove(node, oOrigin, xOrigin);
-                printGameBoard(node);
+            if (state == +10) {
+                gameFinished = false;
+                System.out.println("X Win Game !");
+            } else if (state == -10) {
+                gameFinished = false;
+                System.out.println("O Win Game !");
+            } else if (!tieState) {
+                gameFinished = false;
+                System.out.println("Tie !");
+            } else {
+                if (gameMode == 0) {
+                    getCoordinateFromUser(node, sc);
+                    printGameBoard(node);
+                    Origin x = Game.findAiMoveX(node);
+                    Origin o = Game.findAiMoveO(x, node);
+                    System.out.println(o.x +" " +o.y);
+                    submitMove(node, o, x);
+                    printGameBoard(node);
+                } else {
+                }
             }
 
-        }
-
+        } while (gameFinished);
     }
 
     public static void welcomeMethod() {
+        System.out.println();
         System.out.println("********************************************");
         System.out.println("*********** Welcome To XO Game *************");
         System.out.println("********************************************");
@@ -82,6 +65,20 @@ public class App {
             }
             System.out.println();
         }
+    }
+
+    public static void getCoordinateFromUser(Node node, Scanner sc) {
+        System.out.println("Please enter x position of O :");
+        int xOfO = sc.nextInt();
+        System.out.println("Please enter y position of O :");
+        int yOfO = sc.nextInt();
+        System.out.println("Please enter x position of X :");
+        int xOfX = sc.nextInt();
+        System.out.println("Please enter y position of X :");
+        int yOfX = sc.nextInt();
+        Origin oOrigin = new Origin(xOfO, yOfO);
+        Origin xOrigin = new Origin(xOfX, yOfX);
+        submitMove(node, oOrigin, xOrigin);
     }
 
     public static void submitMove(Node node, Origin oOrigin, Origin xOrigin) {
