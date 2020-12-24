@@ -1,4 +1,3 @@
-import javax.swing.text.StyledEditorKit.BoldAction;
 
 public class Node implements Cloneable {
 
@@ -17,8 +16,9 @@ public class Node implements Cloneable {
     // override cloneable meethod
     @Override
     public Node clone() throws CloneNotSupportedException {
-        // todo : clone new object from node here
-        return null;
+        String[][] newNodeInfo = nodeInfo;
+        Node newNode = new Node(newNodeInfo);
+        return newNode;
     }
 
     // override to string method

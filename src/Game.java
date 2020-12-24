@@ -7,10 +7,16 @@ public class Game {
     public static String playerTurn = ai;
 
     // alpha and beta count
+    // ! alpha is best max value for maximize player
+    // {fa} بزرگترین مقدار برای بازیکن بیشینه
     static int alpha = -10000;
+    // ! beta is best min value for minimize player
+    // {fa} کوچکترین مقدار برای بازیکن کمینه
     static int beta = +10000;
 
     // check move remaining
+    // ! if this method return false that mean game is finished s
+    // {fa} در این متد چک میکنیم ایا خانه از صفحه برای ادامه بازی خالی هست یا خیر
     public static boolean canMoveTile(Node node) {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
@@ -22,8 +28,12 @@ public class Game {
         return false;
     }
 
+    // ! check winner of the game
+    // {fa} در این متد یک استیت از بازی رو میگیرم چک میکنیم کسی برنده هست یا نه
     public static int checkWinner(Node node) {
-        // check row winner
+
+        // ! check row winner
+        // {fa} به صورت سطری تموم سطر های ممکن صفحه رو تست میکنیم
         for (int i = 0; i < 4; i++) {
             if (node.nodeInfo[i][0] == node.nodeInfo[i][1] && node.nodeInfo[i][1] == node.nodeInfo[i][2]
                     || node.nodeInfo[i][1] == node.nodeInfo[i][2] && node.nodeInfo[i][2] == node.nodeInfo[i][3]) {
@@ -34,7 +44,8 @@ public class Game {
                 }
             }
         }
-        // check column winner
+        // ! check column winner
+        // {fa} به صورت ستونی تموم ستون های ممکن صفحه رو تست میکنیم
         for (int j = 0; j < 4; j++) {
             if (node.nodeInfo[0][j] == node.nodeInfo[1][j] && node.nodeInfo[1][j] == node.nodeInfo[2][j]
                     || node.nodeInfo[1][j] == node.nodeInfo[2][j] && node.nodeInfo[2][j] == node.nodeInfo[3][j]) {
@@ -45,7 +56,8 @@ public class Game {
                 }
             }
         }
-        // check diametric winner
+        // ! check diametric winner
+        // {fa} به صورت قطری تموم قطر های ممکن صفحه رو تست میکنیم
         if (node.nodeInfo[0][0] == node.nodeInfo[1][1] && node.nodeInfo[1][1] == node.nodeInfo[2][2]
                 || node.nodeInfo[1][1] == node.nodeInfo[2][2] && node.nodeInfo[2][2] == node.nodeInfo[3][3]) {
 
@@ -86,26 +98,32 @@ public class Game {
                 return +10;
             }
         }
-        // no one win so game status is tie
+        // ! no one win so game status is tie
+        // {fa} کسی بازی رو نبرده هنوز
         return 0;
     }
 
     // minmax method
+    // {fa}
     public static int minmax(int depth, Node node, boolean isMaxUser) {
+
+        // {fa}
         int count = checkWinner(node);
 
+        // {fa}
         if (count == +10) {
             return count;
         } else if (count == -10) {
             return count;
         }
 
+        // {fa}
         if (canMoveTile(node) == false || depth > 6) {
             return 0;
         }
 
         // here complete minmax method
-
+        // {fa}
         if (isMaxUser) {
 
             int bestVal = alpha;
@@ -121,7 +139,7 @@ public class Game {
             }
             return bestVal;
         } else {
-
+            // {fa}
             int bestVal = beta;
 
             for (int i = 0; i < 4; i++) {
@@ -137,6 +155,7 @@ public class Game {
         }
     }
 
+    // {fa}
     public static Origin findAiMoveX(Node node) {
 
         int alphaVal = alpha;
@@ -164,6 +183,7 @@ public class Game {
         return moveOrigin;
     }
 
+    // {fa}
     public static Origin findAiMoveO(Origin origin, Node node) {
 
         int betaVal = beta;
@@ -178,7 +198,7 @@ public class Game {
                 if (node.nodeInfo[origin.x + xItrable[i]][origin.y + yItrable[i]] == "-") {
                     node.nodeInfo[origin.x + xItrable[i]][origin.y + yItrable[i]] = me;
 
-                    int moveVal = minmax(0, node, true);
+                    int moveVal = minmax(0, node, false);
 
                     node.nodeInfo[origin.x + xItrable[i]][origin.y + yItrable[i]] = "-";
 

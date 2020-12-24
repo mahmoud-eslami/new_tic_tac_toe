@@ -35,12 +35,11 @@ public class App {
                 System.out.println("Tie !");
             } else {
                 if (gameMode == 0) {
-                    getCoordinateFromUser(node, sc);
+                    getCoordinateFromUser(node, sc, false);
                     printGameBoard(node);
                     Origin x = Game.findAiMoveX(node);
                     Origin o = Game.findAiMoveO(x, node);
-                    System.out.println(o.x +" " +o.y);
-                    submitMove(node, o, x);
+                    submitMove(node, o, x, true);
                     printGameBoard(node);
                 } else {
                 }
@@ -61,13 +60,13 @@ public class App {
         System.out.println("- Game Board :");
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                System.out.print(node.nodeInfo[i][j]);
+                System.out.print(node.nodeInfo[i][j] + " ");
             }
             System.out.println();
         }
     }
 
-    public static void getCoordinateFromUser(Node node, Scanner sc) {
+    public static void getCoordinateFromUser(Node node, Scanner sc, boolean maxPlayer) {
         System.out.println("Please enter x position of O :");
         int xOfO = sc.nextInt();
         System.out.println("Please enter y position of O :");
@@ -78,11 +77,17 @@ public class App {
         int yOfX = sc.nextInt();
         Origin oOrigin = new Origin(xOfO, yOfO);
         Origin xOrigin = new Origin(xOfX, yOfX);
-        submitMove(node, oOrigin, xOrigin);
+        submitMove(node, oOrigin, xOrigin, maxPlayer);
     }
 
-    public static void submitMove(Node node, Origin oOrigin, Origin xOrigin) {
-        node.nodeInfo[oOrigin.x][oOrigin.y] = Game.me;
-        node.nodeInfo[xOrigin.x][xOrigin.y] = Game.ai;
+    public static void submitMove(Node node, Origin oOrigin, Origin xOrigin, boolean maxPlayer) {
+        if (!maxPlayer) {
+            node.nodeInfo[oOrigin.x][oOrigin.y] = Game.me;
+            node.nodeInfo[xOrigin.x][xOrigin.y] = Game.ai;
+        } else {
+            node.nodeInfo[oOrigin.x][oOrigin.y] = Game.me;
+            node.nodeInfo[xOrigin.x][xOrigin.y] = Game.ai;
+        }
     }
+
 }
