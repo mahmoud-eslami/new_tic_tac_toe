@@ -91,7 +91,7 @@ public class Game {
     }
 
     // minmax method
-    public static int minmax(Boolean isMaxUser, int depth, Node node) {
+    public static int minmax(int depth, Node node, boolean isMaxUser) {
         int count = checkWinner(node);
 
         if (count == +10) {
@@ -100,13 +100,13 @@ public class Game {
             return count;
         }
 
-        if (canMoveTile(node) == false || depth > 2) {
+        if (canMoveTile(node) == false || depth > 6) {
             return 0;
         }
 
         // here complete minmax method
 
-        if (isMaxUser == true) {
+        if (isMaxUser) {
 
             int bestVal = alpha;
 
@@ -114,7 +114,7 @@ public class Game {
                 for (int j = 0; j < 4; j++) {
                     if (node.nodeInfo[i][j] == "-") {
                         node.nodeInfo[i][j] = ai;
-                        bestVal = Math.max(bestVal, minmax(!isMaxUser, depth + 1, node));
+                        bestVal = Math.max(bestVal, minmax(depth + 1, node, false));
                         node.nodeInfo[i][j] = "-";
                     }
                 }
@@ -128,7 +128,7 @@ public class Game {
                 for (int j = 0; j < 4; j++) {
                     if (node.nodeInfo[i][j] == "-") {
                         node.nodeInfo[i][j] = me;
-                        bestVal = Math.min(bestVal, minmax(!isMaxUser, depth + 1, node));
+                        bestVal = Math.min(bestVal, minmax(depth + 1, node, true));
                         node.nodeInfo[i][j] = "-";
                     }
                 }
@@ -149,7 +149,7 @@ public class Game {
                 if (node.nodeInfo[i][j] == "-") {
                     node.nodeInfo[i][j] = ai;
 
-                    int moveVal = minmax(false, 0, node);
+                    int moveVal = minmax(0, node, false);
 
                     node.nodeInfo[i][j] = "-";
 
@@ -173,12 +173,12 @@ public class Game {
         Origin oOrigin = new Origin();
 
         for (int i = 0; i < 4; i++) {
-            if (origin.x + xItrable[i] > 0 && origin.x + xItrable[i] < 3 && origin.y + yItrable[i] > 0
-                    && origin.y + yItrable[i] < 3) {
+            if (origin.x + xItrable[i] >= 0 && origin.x + xItrable[i] <= 3 && origin.y + yItrable[i] >= 0
+                    && origin.y + yItrable[i] <= 3) {
                 if (node.nodeInfo[origin.x + xItrable[i]][origin.y + yItrable[i]] == "-") {
                     node.nodeInfo[origin.x + xItrable[i]][origin.y + yItrable[i]] = me;
 
-                    int moveVal = minmax(true, 0, node);
+                    int moveVal = minmax(0, node, true);
 
                     node.nodeInfo[origin.x + xItrable[i]][origin.y + yItrable[i]] = "-";
 
