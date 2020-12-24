@@ -139,7 +139,8 @@ public class Game {
 
     public static Origin findAiMoveX(Node node) {
 
-        int bestVal = alpha;
+        int alphaVal = alpha;
+
         Origin moveOrigin = new Origin();
 
         for (int i = 0; i < 4; i++) {
@@ -152,14 +153,30 @@ public class Game {
 
                     node.nodeInfo[i][j] = "-";
 
-                    if (moveVal > bestVal) {
+                    if (moveVal > alphaVal) {
                         moveOrigin.x = i;
                         moveOrigin.y = j;
-                        bestVal = moveVal;
+                        alphaVal = moveVal;
                     }
                 }
             }
         }
         return moveOrigin;
+    }
+
+    public static Origin findAiMoveO(Origin origin){
+
+        int betaVal = beta;
+
+        int[] xItrable = {0,1,0,-1};
+        int[] yItrable = {1,0,-1,0};
+        Origin oOrigin = new Origin();
+
+        for (int i = 0; i < xItrable.length; i++) {
+            for (int j = 0; j < yItrable.length; j++) {
+                
+            }
+        }
+        return oOrigin;
     }
 }
