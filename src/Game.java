@@ -118,7 +118,7 @@ public class Game {
         }
 
         // {fa}
-        if (canMoveTile(node) == false || depth > 6) {
+        if (canMoveTile(node) == false || depth > 5) {
             return 0;
         }
 
@@ -198,7 +198,7 @@ public class Game {
                 if (node.nodeInfo[origin.x + xItrable[i]][origin.y + yItrable[i]] == "-") {
                     node.nodeInfo[origin.x + xItrable[i]][origin.y + yItrable[i]] = me;
 
-                    int moveVal = minmax(0, node, false);
+                    int moveVal = minmax(0, node, true);
 
                     node.nodeInfo[origin.x + xItrable[i]][origin.y + yItrable[i]] = "-";
 
