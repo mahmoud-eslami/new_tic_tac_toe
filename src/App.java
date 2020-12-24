@@ -27,11 +27,11 @@ public class App {
             gameFinished = true;
 
             System.out.println("Tie!");
-        } else if (state == +20) {
+        } else if (state == +10) {
             gameFinished = true;
 
             System.out.println("X is winner");
-        } else if (state == -20) {
+        } else if (state == -10) {
             gameFinished = true;
 
             System.out.println("O is winner");
