@@ -52,6 +52,15 @@ public class App {
                 printGameBoard(node);
                 Origin origin = Game.findAiMoveX(node);
                 System.out.println("x = " + origin.x + " y = " + origin.y);
+                Origin newOrigin = Game.findAiMoveO(origin, node);
+                System.out.println("x = " + newOrigin.x + " y = " + newOrigin.y);
+                submitMove(node, origin, newOrigin);
+                printGameBoard(node);
+            } else if(gameMode == 1){
+                Origin oOrigin = new Origin(0, 1);
+                Origin xOrigin = new Origin(0, 0);
+                submitMove(node, oOrigin, xOrigin);
+                printGameBoard(node);
             }
 
         }

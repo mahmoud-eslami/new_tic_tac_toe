@@ -164,17 +164,30 @@ public class Game {
         return moveOrigin;
     }
 
-    public static Origin findAiMoveO(Origin origin){
+    public static Origin findAiMoveO(Origin origin, Node node) {
 
         int betaVal = beta;
 
-        int[] xItrable = {0,1,0,-1};
-        int[] yItrable = {1,0,-1,0};
+        int[] xItrable = { 0, 1, 0, -1 };
+        int[] yItrable = { 1, 0, -1, 0 };
         Origin oOrigin = new Origin();
 
-        for (int i = 0; i < xItrable.length; i++) {
-            for (int j = 0; j < yItrable.length; j++) {
-                
+        for (int i = 0; i < 4; i++) {
+            if (origin.x + xItrable[i] > 0 && origin.x + xItrable[i] < 3 && origin.y + yItrable[i] > 0
+                    && origin.y + yItrable[i] < 3) {
+                if (node.nodeInfo[origin.x + xItrable[i]][origin.y + yItrable[i]] == "-") {
+                    node.nodeInfo[origin.x + xItrable[i]][origin.y + yItrable[i]] = me;
+
+                    int moveVal = minmax(true, 0, node);
+
+                    node.nodeInfo[origin.x + xItrable[i]][origin.y + yItrable[i]] = "-";
+
+                    if (moveVal < betaVal) {
+                        oOrigin.x = origin.x + xItrable[i];
+                        oOrigin.y = origin.y + yItrable[i];
+                        betaVal = moveVal;
+                    }
+                }
             }
         }
         return oOrigin;
