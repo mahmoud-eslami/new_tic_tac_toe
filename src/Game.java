@@ -40,9 +40,9 @@ public class Game {
             if (node.nodeInfo[i][0] == node.nodeInfo[i][1] && node.nodeInfo[i][1] == node.nodeInfo[i][2]
                     || node.nodeInfo[i][1] == node.nodeInfo[i][2] && node.nodeInfo[i][2] == node.nodeInfo[i][3]) {
                 if (node.nodeInfo[i][1] == me) {
-                    return -10;
+                    return -100;
                 } else if (node.nodeInfo[i][1] == ai) {
-                    return +10;
+                    return +100;
                 }
             }
         }
@@ -52,9 +52,9 @@ public class Game {
             if (node.nodeInfo[0][j] == node.nodeInfo[1][j] && node.nodeInfo[1][j] == node.nodeInfo[2][j]
                     || node.nodeInfo[1][j] == node.nodeInfo[2][j] && node.nodeInfo[2][j] == node.nodeInfo[3][j]) {
                 if (node.nodeInfo[1][j] == me) {
-                    return -10;
+                    return -100;
                 } else if (node.nodeInfo[1][j] == ai) {
-                    return +10;
+                    return +100;
                 }
             }
         }
@@ -64,40 +64,40 @@ public class Game {
                 || node.nodeInfo[1][1] == node.nodeInfo[2][2] && node.nodeInfo[2][2] == node.nodeInfo[3][3]) {
 
             if (node.nodeInfo[1][1] == me) {
-                return -10;
+                return -100;
             } else if (node.nodeInfo[1][1] == ai) {
-                return +10;
+                return +100;
             }
 
         } else if (node.nodeInfo[0][3] == node.nodeInfo[1][2] && node.nodeInfo[1][2] == node.nodeInfo[2][1]
                 || node.nodeInfo[1][2] == node.nodeInfo[2][1] && node.nodeInfo[2][1] == node.nodeInfo[3][0]) {
 
             if (node.nodeInfo[1][2] == me) {
-                return -10;
+                return -100;
             } else if (node.nodeInfo[1][2] == ai) {
-                return +10;
+                return +100;
             }
 
         } else if (node.nodeInfo[1][0] == node.nodeInfo[2][1] && node.nodeInfo[2][1] == node.nodeInfo[3][2]) {
 
             if (node.nodeInfo[2][1] == me) {
-                return -10;
+                return -100;
             } else if (node.nodeInfo[2][1] == ai) {
-                return +10;
+                return +100;
             }
 
         } else if (node.nodeInfo[0][1] == node.nodeInfo[1][2] && node.nodeInfo[1][2] == node.nodeInfo[2][3]) {
 
             if (node.nodeInfo[1][2] == me) {
-                return -10;
+                return -100;
             } else if (node.nodeInfo[1][2] == ai) {
-                return +10;
+                return +100;
             }
         } else if (node.nodeInfo[1][3] == node.nodeInfo[2][2] && node.nodeInfo[2][2] == node.nodeInfo[3][1]) {
             if (node.nodeInfo[2][2] == me) {
-                return -10;
+                return -100;
             } else if (node.nodeInfo[2][2] == ai) {
-                return +10;
+                return +100;
             }
         }
         // ! no one win so game status is tie
@@ -109,13 +109,16 @@ public class Game {
     // {fa}
     public static int minmax(int depth, Node node, boolean isMaxUser, int myBeta, int myAlpha) {
 
+        int[] xIterable = { 0, 1, 0, -1 };
+        int[] yIterable = { 1, 0, -1, 0 };
+
         // {fa}
         int count = checkWinner(node);
 
         // {fa}
-        if (count == +10) {
+        if (count == +100) {
             return count - depth;
-        } else if (count == -10) {
+        } else if (count == -100) {
             return count + depth;
         }
 
@@ -134,12 +137,23 @@ public class Game {
                 for (int j = 0; j < 4; j++) {
                     if (node.nodeInfo[i][j] == "-") {
                         node.nodeInfo[i][j] = ai;
-                        bestVal = Math.max(bestVal, minmax(depth + 1, node, false, beta, alpha));
-                        myAlpha = Math.max(myAlpha, bestVal);
-                        node.nodeInfo[i][j] = "-";
-                        if (myBeta <= myAlpha) {
-                            break;
+
+                        for (int k = 0; k < 4; k++) {
+
+                            if (node.nodeInfo[i + xIterable[k]][j + yIterable[k]] == "-" && i + xIterable[k] >= 0
+                                    && i + xIterable[k] <= 3 && j + yIterable[k] >= 0 && j + yIterable[k] <= 3) {
+
+                                node.nodeInfo[i + xIterable[k]][j + yIterable[k]] = me;
+                                bestVal = Math.max(bestVal, minmax(depth + 1, node, false, beta, alpha));
+                                myAlpha = Math.max(myAlpha, bestVal);
+                                node.nodeInfo[i + xIterable[k]][j + yIterable[k]] = "-";
+                                if (myBeta <= myAlpha) {
+                                    break;
+                                }
+
+                            }
                         }
+                        node.nodeInfo[i][j] = "-";
                     }
                 }
             }
@@ -152,16 +166,50 @@ public class Game {
                 for (int j = 0; j < 4; j++) {
                     if (node.nodeInfo[i][j] == "-") {
                         node.nodeInfo[i][j] = me;
-                        bestVal = Math.min(bestVal, minmax(depth + 1, node, true, beta, alpha));
-                        myBeta = Math.min(myBeta, bestVal);
-                        node.nodeInfo[i][j] = "-";
-                        if (myBeta <= myAlpha) {
-                            break;
+
+                        for (int k = 0; k < 4; k++) {
+
+                            if (node.nodeInfo[i + xIterable[k]][j + yIterable[k]] == "-" && i + xIterable[k] >= 0
+                                    && i + xIterable[k] <= 3 && j + yIterable[k] >= 0 && j + yIterable[k] <= 3) {
+
+                                node.nodeInfo[i + xIterable[k]][j + yIterable[k]] = ai;
+                                bestVal = Math.min(bestVal, minmax(depth + 1, node, true, beta, alpha));
+                                myBeta = Math.min(myAlpha, bestVal);
+                                node.nodeInfo[i + xIterable[k]][j + yIterable[k]] = "-";
+                                if (myBeta <= myAlpha) {
+                                    break;
+                                }
+
+                            }
                         }
+                        node.nodeInfo[i][j] = "-";
                     }
                 }
             }
             return bestVal;
         }
+    }
+
+    public static void findBestMoveForAi(Node node) {
+        int bestVal = alpha;
+        Origin xOrigin = new Origin();
+        Origin yOrigin = new Origin();
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                node.nodeInfo[i][j] = ai;
+
+                int movationValue = minmax(0, node, false, beta, alpha);
+                
+                node.nodeInfo[i][j] = "-";
+
+                if(movationValue > bestVal) {
+                    xOrigin.x = i;
+                    xOrigin.y = j;
+                    bestVal = movationValue;
+                }
+            }
+        }
+        node.nodeInfo[xOrigin.x][xOrigin.y] = ai;
     }
 }

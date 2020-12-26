@@ -24,10 +24,10 @@ public class App {
             int state = Game.checkWinner(node);
             boolean tieState = Game.canMoveTile(node);
 
-            if (state == +10) {
+            if (state == +100) {
                 gameFinished = false;
                 System.out.println("X Win Game !");
-            } else if (state == -10) {
+            } else if (state == -100) {
                 gameFinished = false;
                 System.out.println("O Win Game !");
             } else if (!tieState) {
@@ -36,6 +36,8 @@ public class App {
             } else {
                 if (gameMode == 0) {
                     getCoordinateFromUser(node, sc, false);
+                    printGameBoard(node);
+                    Game.findBestMoveForAi(node);
                     printGameBoard(node);
                 } else {
                 }
