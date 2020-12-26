@@ -1,3 +1,5 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class Game {
 
@@ -105,16 +107,16 @@ public class Game {
 
     // minmax method
     // {fa}
-    public static int minmax(int depth, Node node, boolean isMaxUser) {
+    public static int minmax(int depth, Node node, boolean isMaxUser, int myBeta, int myAlpha) {
 
         // {fa}
         int count = checkWinner(node);
 
         // {fa}
         if (count == +10) {
-            return count;
+            return count - depth;
         } else if (count == -10) {
-            return count;
+            return count + depth;
         }
 
         // {fa}
@@ -132,8 +134,12 @@ public class Game {
                 for (int j = 0; j < 4; j++) {
                     if (node.nodeInfo[i][j] == "-") {
                         node.nodeInfo[i][j] = ai;
-                        bestVal = Math.max(bestVal, minmax(depth + 1, node, false));
+                        bestVal = Math.max(bestVal, minmax(depth + 1, node, false, beta, alpha));
+                        myAlpha = Math.max(myAlpha, bestVal);
                         node.nodeInfo[i][j] = "-";
+                        if (myBeta <= myAlpha) {
+                            break;
+                        }
                     }
                 }
             }
@@ -146,70 +152,16 @@ public class Game {
                 for (int j = 0; j < 4; j++) {
                     if (node.nodeInfo[i][j] == "-") {
                         node.nodeInfo[i][j] = me;
-                        bestVal = Math.min(bestVal, minmax(depth + 1, node, true));
+                        bestVal = Math.min(bestVal, minmax(depth + 1, node, true, beta, alpha));
+                        myBeta = Math.min(myBeta, bestVal);
                         node.nodeInfo[i][j] = "-";
+                        if (myBeta <= myAlpha) {
+                            break;
+                        }
                     }
                 }
             }
             return bestVal;
         }
-    }
-
-    // {fa}
-    public static Origin findAiMoveX(Node node) {
-
-        int alphaVal = alpha;
-
-        Origin moveOrigin = new Origin();
-
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-
-                if (node.nodeInfo[i][j] == "-") {
-                    node.nodeInfo[i][j] = ai;
-
-                    int moveVal = minmax(0, node, false);
-
-                    node.nodeInfo[i][j] = "-";
-
-                    if (moveVal > alphaVal) {
-                        moveOrigin.x = i;
-                        moveOrigin.y = j;
-                        alphaVal = moveVal;
-                    }
-                }
-            }
-        }
-        return moveOrigin;
-    }
-
-    // {fa}
-    public static Origin findAiMoveO(Origin origin, Node node) {
-
-        int betaVal = beta;
-
-        int[] xItrable = { 0, 1, 0, -1 };
-        int[] yItrable = { 1, 0, -1, 0 };
-        Origin oOrigin = new Origin();
-
-        for (int i = 0; i < 4; i++) {
-            if (origin.x + xItrable[i] >= 0 && origin.x + xItrable[i] <= 3 && origin.y + yItrable[i] >= 0
-                    && origin.y + yItrable[i] <= 3) {
-                if (node.nodeInfo[origin.x + xItrable[i]][origin.y + yItrable[i]] == "-") {
-                    node.nodeInfo[origin.x + xItrable[i]][origin.y + yItrable[i]] = me;
-
-                    int moveVal = minmax(0, node, true);
-
-                    node.nodeInfo[origin.x + xItrable[i]][origin.y + yItrable[i]] = "-";
-
-                    if (moveVal < betaVal) {
-                        oOrigin.x = origin.x + xItrable[i];
-                        oOrigin.y = origin.y + yItrable[i];
-                        betaVal = moveVal;
-                    }
-                }
-            }
-        }
-        return oOrigin;
     }
 }

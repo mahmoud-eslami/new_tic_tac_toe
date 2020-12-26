@@ -37,10 +37,6 @@ public class App {
                 if (gameMode == 0) {
                     getCoordinateFromUser(node, sc, false);
                     printGameBoard(node);
-                    Origin x = Game.findAiMoveX(node);
-                    Origin o = Game.findAiMoveO(x, node);
-                    submitMove(node, o, x, true);
-                    printGameBoard(node);
                 } else {
                 }
             }
