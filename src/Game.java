@@ -106,6 +106,8 @@ public class Game {
     public static int minimax(Boolean isMax, int depth, Node node, int myBeta, int myAlpha) {
 
         int winner = checkWinner(node);
+        int[] xPosition = { 0, 1, 0, -1 };
+        int[] yPosition = { 1, 0, -1, 0 };
 
         if (winner == +100) {
             return 100 - depth;
@@ -123,12 +125,19 @@ public class Game {
                 for (int j = 0; j < 3; j++) {
                     node.nodeInfo[i][j] = ai;
 
-                    bestVal = Math.max(bestVal, minimax(false, depth + 1, node, myBeta, myAlpha));
-                    myAlpha = Math.max(bestVal, myAlpha);
-                    if(myBeta <= myAlpha){
-                        break;
-                    }
+                    for (int k = 0; k < 3; k++) {
+                        if (node.nodeInfo[xPosition[k] + i][yPosition[k] + j] == "-" && xPosition[k] + i >= 0
+                        && xPosition[k] + i <= 3 && xPosition[k] + j >= 0 && xPosition[k] + j <= 3) {
 
+                            node.nodeInfo[xPosition[k]][yPosition[k]] = me;
+                            bestVal = Math.max(bestVal, minimax(false, depth + 1, node, myBeta, myAlpha));
+                            myAlpha = Math.max(bestVal, myAlpha);
+                            if (myBeta <= myAlpha) {
+                                break;
+                            }
+                        }
+                    }
+                    node.nodeInfo[i][j] = "-";
                 }
             }
             return bestVal;
@@ -139,11 +148,22 @@ public class Game {
                 for (int j = 0; j < 3; j++) {
                     node.nodeInfo[i][j] = me;
 
-                    bestVal = Math.min(bestVal, minimax(true, depth + 1, node, myBeta, myAlpha));
-                    myBeta = Math.min(bestVal, myBeta);
-                    if(myBeta <= myAlpha){
-                        break;
+                    for (int k = 0; k < 3; k++) {
+                        if (node.nodeInfo[xPosition[k] + i][yPosition[k] + j] == "-" && xPosition[k] + i >= 0
+                                && xPosition[k] + i <= 3 && xPosition[k] + j >= 0 && xPosition[k] + j <= 3) {
+
+                            node.nodeInfo[xPosition[k]][yPosition[k]] = ai;
+                            bestVal = Math.min(bestVal, minimax(true, depth + 1, node, myBeta, myAlpha));
+                            myBeta = Math.min(bestVal, myBeta);
+                            node.nodeInfo[xPosition[k]][yPosition[k]] = "-";
+                            if (myBeta <= myAlpha) {
+                                break;
+                            }
+                        }
                     }
+
+                    node.nodeInfo[i][j] = "-";
+
                 }
             }
             return bestVal;

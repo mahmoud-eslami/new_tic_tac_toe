@@ -37,7 +37,7 @@ public class App {
                 if (gameMode == 0) {
                     getCoordinateFromUser(node, sc, false);
                     printGameBoard(node);
-                    Game.findBestMoveForAi(node);
+                    // Game.findBestMoveForAi(node);
                     printGameBoard(node);
                 } else {
                 }
