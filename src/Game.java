@@ -106,8 +106,6 @@ public class Game {
     public static int minimax(Boolean isMax, int depth, Node node, int myBeta, int myAlpha) {
 
         int winner = checkWinner(node);
-        int[] xPosition = { 0, 1, 0, -1 };
-        int[] yPosition = { 1, 0, -1, 0 };
 
         if (winner == +100) {
             return 100 - depth;
@@ -120,146 +118,65 @@ public class Game {
         }
 
         if (isMax) {
-            int bestVal = staticAlpha;
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    node.nodeInfo[i][j] = ai;
-
-                    for (int k = 0; k < 3; k++) {
-                        if (node.nodeInfo[xPosition[k] + i][yPosition[k] + j] == "-" && xPosition[k] + i >= 0
-                        && xPosition[k] + i <= 3 && xPosition[k] + j >= 0 && xPosition[k] + j <= 3) {
-
-                            node.nodeInfo[xPosition[k]][yPosition[k]] = me;
-                            bestVal = Math.max(bestVal, minimax(false, depth + 1, node, myBeta, myAlpha));
-                            myAlpha = Math.max(bestVal, myAlpha);
-                            if (myBeta <= myAlpha) {
-                                break;
-                            }
+            int value = staticAlpha;
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    if (node.nodeInfo[i][j] == "-") {
+                        node.nodeInfo[i][j] = ai;
+                        value = Math.max(value, minimax(!isMax, depth + 1, node, myBeta, myAlpha));
+                        myAlpha = Math.max(myAlpha, value);
+                        node.nodeInfo[i][j] = "-";
+                        if (myAlpha >= myBeta) {
+                            break;
                         }
                     }
-                    node.nodeInfo[i][j] = "-";
                 }
             }
-            return bestVal;
-
+            return value;
         } else {
-            int bestVal = staticBeta;
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    node.nodeInfo[i][j] = me;
-
-                    for (int k = 0; k < 3; k++) {
-                        if (node.nodeInfo[xPosition[k] + i][yPosition[k] + j] == "-" && xPosition[k] + i >= 0
-                                && xPosition[k] + i <= 3 && xPosition[k] + j >= 0 && xPosition[k] + j <= 3) {
-
-                            node.nodeInfo[xPosition[k]][yPosition[k]] = ai;
-                            bestVal = Math.min(bestVal, minimax(true, depth + 1, node, myBeta, myAlpha));
-                            myBeta = Math.min(bestVal, myBeta);
-                            node.nodeInfo[xPosition[k]][yPosition[k]] = "-";
-                            if (myBeta <= myAlpha) {
-                                break;
-                            }
+            int value = staticBeta;
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    if (node.nodeInfo[i][j] == "-") {
+                        node.nodeInfo[i][j] = me;
+                        value = Math.min(value, minimax(!isMax, depth + 1, node, myBeta, myAlpha));
+                        myBeta = Math.min(myBeta, value);
+                        node.nodeInfo[i][j] = "-";
+                        if (myAlpha >= myBeta) {
+                            break;
                         }
                     }
-
-                    node.nodeInfo[i][j] = "-";
-
                 }
             }
-            return bestVal;
+            return value;
         }
     }
 
-    // // minmax method
-    // // {fa}
-    // public static int minmax(int depth, Node node, boolean isMaxUser, int myBeta,
-    // int myAlpha) {
+    public static void findBestMove(Node node) {
+        int value = staticAlpha;
+        Origin orig = new Origin();
 
-    // int[] xIterable = { 0, 1, 0, -1 };
-    // int[] yIterable = { 1, 0, -1, 0 };
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (node.nodeInfo[i][j] == "-") {
+                    node.nodeInfo[i][j] = ai;
 
-    // // {fa}
-    // int count = checkWinner(node);
+                    int movationValue = minimax(true, 0, node, staticAlpha, staticBeta);
 
-    // // {fa}
-    // if (count == +100) {
-    // return count - depth;
-    // } else if (count == -100) {
-    // return count + depth;
-    // }
+                    node.nodeInfo[i][j] = "-";
 
-    // // {fa}
-    // if (canMoveTile(node) == false || depth > 5) {
-    // return 0;
-    // }
-
-    // // here complete minmax method
-    // // {fa}
-    // if (isMaxUser) {
-
-    // int bestVal = alpha;
-
-    // for (int i = 0; i < 4; i++) {
-    // for (int j = 0; j < 4; j++) {
-    // if (node.nodeInfo[i][j] == "-") {
-    // node.nodeInfo[i][j] = ai;
-
-    // for (int k = 0; k < 4; k++) {
-
-    // if (node.nodeInfo[i + xIterable[k]][j + yIterable[k]] == "-" && i +
-    // xIterable[k] >= 0
-    // && i + xIterable[k] <= 3 && j + yIterable[k] >= 0 && j + yIterable[k] <= 3) {
-
-    // node.nodeInfo[i + xIterable[k]][j + yIterable[k]] = me;
-    // bestVal = Math.max(bestVal, minmax(depth + 1, node, false, beta, alpha));
-    // myAlpha = Math.max(myAlpha, bestVal);
-    // node.nodeInfo[i + xIterable[k]][j + yIterable[k]] = "-";
-    // if (myBeta <= myAlpha) {
-    // break;
-    // }
-
-    // }
-    // }
-    // node.nodeInfo[i][j] = "-";
-    // }
-    // }
-    // }
-    // return bestVal;
-    // } else {
-    // // {fa}
-    // int bestVal = beta;
-
-    // for (int i = 0; i < 4; i++) {
-    // for (int j = 0; j < 4; j++) {
-    // if (node.nodeInfo[i][j] == "-") {
-    // node.nodeInfo[i][j] = me;
-
-    // for (int k = 0; k < 4; k++) {
-
-    // if (node.nodeInfo[i + xIterable[k]][j + yIterable[k]] == "-" && i +
-    // xIterable[k] >= 0
-    // && i + xIterable[k] <= 3 && j + yIterable[k] >= 0 && j + yIterable[k] <= 3) {
-
-    // node.nodeInfo[i + xIterable[k]][j + yIterable[k]] = ai;
-    // bestVal = Math.min(bestVal, minmax(depth + 1, node, true, beta, alpha));
-    // myBeta = Math.min(myAlpha, bestVal);
-    // node.nodeInfo[i + xIterable[k]][j + yIterable[k]] = "-";
-    // if (myBeta <= myAlpha) {
-    // break;
-    // }
-
-    // }
-    // }
-    // node.nodeInfo[i][j] = "-";
-    // }
-    // }
-    // }
-    // return bestVal;
-    // }
-    // }
-
+                    if (movationValue > value) {
+                        orig.x = i;
+                        orig.y = j;
+                        value = movationValue;
+                    }
+                }
+            }
+        }
+        node.nodeInfo[orig.x][orig.y] = ai;
+    }
     // public static void findBestMoveForAi(Node node) {
-    // int bestVal = alpha;
+    // int bestVal = staticAlpha;
     // Origin xOrigin = new Origin();
     // Origin yOrigin = new Origin();
 
@@ -267,11 +184,11 @@ public class Game {
     // for (int j = 0; j < 4; j++) {
     // node.nodeInfo[i][j] = ai;
 
-    // int movationValue = minmax(0, node, true, beta, alpha);
+    // int movationValue = minimax(true, 0, node, staticBeta, staticAlpha);
 
     // node.nodeInfo[i][j] = "-";
 
-    // if(movationValue > bestVal) {
+    // if (movationValue > bestVal) {
     // xOrigin.x = i;
     // xOrigin.y = j;
     // bestVal = movationValue;
