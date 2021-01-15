@@ -210,8 +210,8 @@ public class Game {
                                 node.nodeInfo[i + iIteration[k]][j + jIteration[k]] = "-";
 
                                 if (movationValue > value) {
-                                    oOrig.x = i + k;
-                                    oOrig.y = j + k;
+                                    oOrig.x = i + iIteration[k];
+                                    oOrig.y = j + jIteration[k];
                                     xOrig.x = i;
                                     xOrig.y = j;
                                     value = movationValue;
