@@ -40,6 +40,13 @@ public class App {
                     Game.findBestMove(node);
                     printGameBoard(node);
                 } else {
+                    node.nodeInfo[0][0] = Game.ai;
+                    node.nodeInfo[1][0] = Game.me;
+                    printGameBoard(node);
+                    getCoordinateFromUser(node, sc, false);
+                    printGameBoard(node);
+                    Game.findBestMove(node);
+                    printGameBoard(node);
                 }
             }
 
