@@ -144,9 +144,9 @@ public class Game {
                             }
                         }
                         node.nodeInfo[i][j] = "-";
-                        if (myAlpha >= myBeta) {
-                            break;
-                        }
+                        // if (myAlpha >= myBeta) {
+                        //     break;
+                        // }
                     }
                 }
             }
@@ -176,9 +176,6 @@ public class Game {
                             }
                         }
                         node.nodeInfo[i][j] = "-";
-                        if (myAlpha >= myBeta) {
-                            break;
-                        }
                     }
                 }
             }
