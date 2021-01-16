@@ -70,9 +70,9 @@ public class Game {
         } else if (node.nodeInfo[0][3] == node.nodeInfo[1][2] && node.nodeInfo[1][2] == node.nodeInfo[2][1]
                 || node.nodeInfo[1][2] == node.nodeInfo[2][1] && node.nodeInfo[2][1] == node.nodeInfo[3][0]) {
 
-            if (node.nodeInfo[1][2] == me) {
+            if (node.nodeInfo[1][2] == me && node.nodeInfo[2][1] == me) {
                 return -100;
-            } else if (node.nodeInfo[1][2] == ai) {
+            } else if (node.nodeInfo[1][2] == ai && node.nodeInfo[2][1] == ai) {
                 return +100;
             }
 
