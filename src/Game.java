@@ -4,15 +4,15 @@ public class Game {
     // character symbol
     public static String ai = "x";
     public static String me = "o";
-    public static String playerTurn = ai;
+    // public static String playerTurn = ai;
 
     // alpha and beta count
     // ! alpha is best max value for maximize player
     // {fa} بزرگترین مقدار برای بازیکن بیشینه
-    static int staticAlpha = -1000;
+    static int staticAlpha = -100000;
     // ! beta is best min value for minimize player
     // {fa} کوچکترین مقدار برای بازیکن کمینه
-    static int staticBeta = +1000;
+    static int staticBeta = +100000;
 
     // check move remaining
     // ! if this method return false that mean game is finished s

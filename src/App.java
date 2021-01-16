@@ -40,8 +40,7 @@ public class App {
                     Game.findBestMove(node);
                     printGameBoard(node);
                 } else {
-                    node.nodeInfo[0][0] = Game.ai;
-                    node.nodeInfo[1][0] = Game.me;
+                    aiRandomMove(node);
                     printGameBoard(node);
                     getCoordinateFromUser(node, sc, false);
                     printGameBoard(node);
@@ -51,6 +50,33 @@ public class App {
             }
 
         } while (gameFinished);
+    }
+
+    public static void aiRandomMove(Node node) {
+        int i_x_random = (int) (Math.random() * (3 - 0 + 1) + 0);
+        int j_x_random = (int) (Math.random() * (3 - 0 + 1) + 0);
+
+        if ((i_x_random + 1) >= 0 && (i_x_random + 1) < 4 && (j_x_random) < 4 && (j_x_random) >= 0) {
+
+            node.nodeInfo[i_x_random][j_x_random] = Game.ai;
+            node.nodeInfo[i_x_random + 1][j_x_random] = Game.me;
+
+        } else if ((i_x_random - 1) >= 0 && (i_x_random - 1) < 4 && (j_x_random) < 4 && (j_x_random) > 0) {
+
+            node.nodeInfo[i_x_random][j_x_random] = Game.ai;
+            node.nodeInfo[i_x_random - 1][j_x_random] = Game.me;
+
+        } else if ((i_x_random) >= 0 && (i_x_random) < 4 && (j_x_random + 1) < 4 && (j_x_random + 1) >= 0) {
+
+            node.nodeInfo[i_x_random][j_x_random] = Game.ai;
+            node.nodeInfo[i_x_random][j_x_random + 1] = Game.me;
+
+        } else if ((i_x_random) >= 0 && (i_x_random) < 4 && (j_x_random - 1) < 4 && (j_x_random - 1) >= 0) {
+
+            node.nodeInfo[i_x_random][j_x_random] = Game.ai;
+            node.nodeInfo[i_x_random][j_x_random - 1] = Game.me;
+
+        }
     }
 
     public static void welcomeMethod() {
@@ -63,12 +89,14 @@ public class App {
 
     public static void printGameBoard(Node node) {
         System.out.println("- Game Board :");
+        System.out.println();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 System.out.print(node.nodeInfo[i][j] + " ");
             }
             System.out.println();
         }
+        System.out.println();
     }
 
     public static void getCoordinateFromUser(Node node, Scanner sc, boolean maxPlayer) {
