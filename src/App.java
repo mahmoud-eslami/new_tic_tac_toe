@@ -40,6 +40,7 @@ public class App {
                     Game.findBestMove(node);
                     printGameBoard(node);
                 } else {
+                    gameMode = 0;
                     aiRandomMove(node);
                     printGameBoard(node);
                     getCoordinateFromUser(node, sc, false);
